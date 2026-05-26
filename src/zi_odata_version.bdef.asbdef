@@ -1,0 +1,38 @@
+define behavior for ZI_ODATA_VERSION alias Version
+persistent table zodata_version
+lock dependent by _Registry
+authorization dependent by _Registry
+{
+  // ── No standalone create/update/delete from UI ─────────────────────────────
+  // Versions are created exclusively via the createVersion action on Registry.
+  // Once written they are immutable – no update or delete allowed from UI.
+
+  // ── Parent Association ─────────────────────────────────────────────────────
+  association _Registry;
+
+  // ── All fields are readonly (immutable after creation) ────────────────────
+  field ( readonly )
+    ServiceId,
+    SnapshotId,
+    SnapshotVersion,
+    MetadataHash,
+    MetadataXml,
+    SnapshotBy,
+    SnapshotAt,
+    TriggerType,
+    IsChanged;
+
+  // ── Field Mapping ─────────────────────────────────────────────────────────
+  mapping for zodata_version corresponding
+  {
+    ServiceId       = service_id;
+    SnapshotId      = snapshot_id;
+    SnapshotVersion = snapshot_version;
+    MetadataHash    = metadata_hash;
+    MetadataXml     = metadata_xml;
+    SnapshotBy      = snapshot_by;
+    SnapshotAt      = snapshot_at;
+    TriggerType     = trigger_type;
+    IsChanged       = is_changed;
+  }
+}

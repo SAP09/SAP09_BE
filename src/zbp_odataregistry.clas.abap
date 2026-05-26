@@ -1,0 +1,10 @@
+CLASS zbp_odataregistry DEFINITION
+  PUBLIC
+  ABSTRACT
+  FINAL
+  FOR BEHAVIOR OF zi_odata_registry.
+
+ENDCLASS.
+
+CLASS zbp_odataregistry IMPLEMENTATION.
+ENDCLASS.

@@ -1,0 +1,50 @@
+managed implementation in class ZBP_OdataRegistry unique;
+strict ( 2 );
+
+define behavior for ZI_ODATA_REGISTRY alias Registry
+persistent table zodata_registry
+lock master
+authorization master ( instance )
+etag master RegisteredAt
+{
+  // ── Standard CRUD ──────────────────────────────────────────────────────────
+  create;
+  update;
+  delete;
+
+  // ── Custom Action ──────────────────────────────────────────────────────────
+  // Triggers snapshot creation for this service entry
+  action createVersion result [1] $self;
+
+  // ── Compositions ──────────────────────────────────────────────────────────
+  association _Version { create; }
+
+  // ── Field Controls ────────────────────────────────────────────────────────
+  // System-set fields – never writable by UI
+  field ( readonly ) ServiceId, RegisteredAt, RegisteredBy;
+
+  // Must be provided on creation
+  field ( mandatory : create ) ServiceName, ServiceType;
+
+  // ── Validations (on Save) ─────────────────────────────────────────────────
+  validation validateServiceName on save { create; update; }
+  validation validateServiceType on save { create; update; }
+
+  // ── Determinations ────────────────────────────────────────────────────────
+  determination setServiceId      on modify { create; }
+  determination setRegisteredByAt on modify { create; }
+
+  // ── Field Mapping ─────────────────────────────────────────────────────────
+  mapping for zodata_registry corresponding
+  {
+    ServiceId    = service_id;
+    ServiceName  = service_name;
+    ServiceType  = service_type;
+    Namespace    = namespace;
+    VersionNo    = version_no;
+    Status       = status;
+    RegisteredBy = registered_by;
+    RegisteredAt = registered_at;
+    Description  = description;
+  }
+}
