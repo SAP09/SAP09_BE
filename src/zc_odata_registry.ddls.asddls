@@ -36,9 +36,12 @@ define root view entity ZC_ODATA_REGISTRY
     @UI.hidden: true
     RegisteredAt,
 
+    @UI.hidden: true
+    LastChangeAt,
+
     Description,
 
-    _Version : redirected to composition child ZC_ODATA_VERSION ,
+    _Version : redirected to composition child ZC_ODATA_VERSION,
     _ServiceType,
     _Status,
     _Log

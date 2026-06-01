@@ -1,6 +1,7 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'OData Service Registry Interface View'
+@ObjectModel.writeActivePersistence: 'ZODATA_REGISTRY'
 @Metadata.ignorePropagatedAnnotations: true
 define root view entity ZI_ODATA_REGISTRY
   as select from zodata_registry
@@ -11,12 +12,20 @@ define root view entity ZI_ODATA_REGISTRY
 {
     key service_id as ServiceId,
     service_name as ServiceName,
+    @ObjectModel.text.association: '_ServiceType'
     service_type as ServiceType,
+    _ServiceType.Description as ServiceTypeText,
     namespace as Namespace,
     version_no as VersionNo,
+    @ObjectModel.text.association: '_Status'
     status as Status,
+    _Status.Description as StatusText,
+    @Semantics.user.createdBy: true
     registered_by as RegisteredBy,
+    @Semantics.systemDateTime.createdAt: true
     registered_at as RegisteredAt,
+    @Semantics.systemDateTime.localInstanceLastChangedAt: true
+    last_change_at as LastChangeAt,
     description as Description,
     _Version,
     _ServiceType,
